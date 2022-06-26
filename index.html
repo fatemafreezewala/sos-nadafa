@@ -10,23 +10,34 @@
 
 	<link rel="stylesheet" href="MarkerCluster.css" />
 	<link rel="stylesheet" href="MarkerCluster.Default.css" />
+  <link rel="stylesheet" href="LControlLocate.css" />
 	<script src="leaflet.markercluster-src.js"></script>
 	<script src="realworld.388.js"></script>
-  </head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7"></script>
+  <script src="Control.js"></script>
+</head>
   <body>
   
     <div id="map" style="width:100%;"></div>
     <span>Mouse over a cluster to see the bounds of its children and click a cluster to zoom to those bounds</span>
     <script type="text/javascript">
   
-      var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 18,
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Points &copy 2012 LINZ'
-        }),
+  var base = {
+        'Empty': L.tileLayer(''),
+        'OpenStreetMap': L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          'attribution': 'Map data &copy; SOS NDD contributors'
+        })
+      }; 
         latlng = L.latLng(33.6835, -7.38494);
   
-      var map = L.map('map', {center: latlng, zoom: 13, layers: [tiles]});
-  
+      var map = L.map('map', {center: latlng, zoom: 13, layers: [base.OpenStreetMap],attributionControl:true});
+      lc = L.control.locate({
+    strings: {
+        title: "Show me where I am, yo!"
+    }
+}).addTo(map);
       var markers = L.markerClusterGroup();
       
       for (var i = 0; i < addressPoints.length; i++) {
